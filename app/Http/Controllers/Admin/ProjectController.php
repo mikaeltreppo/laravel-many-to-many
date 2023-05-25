@@ -18,6 +18,7 @@ class ProjectController extends Controller
      */
     public function index() //finita
     {
+    
         $types = Type::all();
         $project = Project::all();
         return view('admin.projects.index', compact('project', 'types'));
@@ -116,7 +117,7 @@ class ProjectController extends Controller
         $project = Project::findOrFail($id);
         $form_data = $request->all();
         $project->update($form_data);
-        $project->technologies()-sync($request->technologies);
+        $project->technologies()->sync($request->technologies);
 
         return redirect()->route('admin.projects.show', ['project' => $project->id]);
 

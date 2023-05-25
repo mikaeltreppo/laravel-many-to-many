@@ -7,32 +7,42 @@
             @method('PUT')
             <div class="mb-3">
                 <label for="title" class="form-label">Titolo</label>
-                <input type="text" class="form-control" id="title" name="title" value="{{old('project', $project->title)}}">
-                
+                <input type="text" class="form-control" id="title" name="title"
+                    value="{{ old('project', $project->title) }}">
+
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Description</label>
-                <input type="text" class="form-control" id="description" name="description" value="{{old('project', $project->description)}}">
+                <input type="text" class="form-control" id="description" name="description"
+                    value="{{ old('project', $project->description) }}">
             </div>
 
             <!--types in select-->
             <div class="mb-3">
                 <label for="type_id" class="form-label">Tipologia</label>
                 <select class="form-select" aria-label="Default select example" name="type_id" id="type_id">
-                
-                    @foreach ($types as $type)
-                    <option value="{{$type->id}}">{{$type->title}}</option>
-                     @endforeach
 
-                  </select>
+                    @foreach ($types as $type)
+                        <option value="{{ $type->id }}">{{ $type->title }}</option>
+                    @endforeach
+
+                </select>
 
             </div>
             <!--technologies in checkbox-->
             <div class="mb-3">
-   
+
                 @foreach ($technologies as $tech)
-                    <input id="tech_{{$tech->id}}" type="checkbox" name="technologies[]" value="{{$tech->id}}"">
-                    <label for="tech_{{$tech->id}}"> {{$tech->name}} </label><br>
+                
+                    @if ($errors->any())
+                        <input id="tech_{{ $tech->id }}" @if (in_array($tech->id, old('technologies', []))) checked @endif
+                            type="checkbox" name="technologies[]" value="{{ $tech->id }}">
+                    @else
+                        <input id="tech_{{ $tech->id }}" @if ($project->technologies->contains($tech->id)) checked @endif type="checkbox"
+                            name="technologies[]" value="{{ $tech->id }}">
+                    @endif
+
+                    <label for="tech_{{ $tech->id }}"> {{ $tech->name }} </label><br>
                 @endforeach
 
 
